@@ -127,9 +127,11 @@ bp_configlet= {
       ],
       "display_name": "enableoc"
     },
-    "condition": "role in [\"spine\",\"leaf\"]",
+    "condition": "role in [\"leaf\",\"spine\",\"superspine\"]",
     "label": "enableoc"
 }
 create_oc_configlet=requests.post(f'{aos_url}/api/design/configlets',headers=headers,json=grpc_configlet,verify=False)
-apply_oc_configlet=requests.post(f'{aos_url}/api/blueprints/{bpid}/configlets',headers=headers,json=bp_configlet,verify=False)
+for blueprint in blueprintlist.json()['items']:
+  bpid=blueprint['id']
+  apply_oc_configlet=requests.post(f'{aos_url}/api/blueprints/{bpid}/configlets',headers=headers,json=bp_configlet,verify=False)
 pprint(apply_oc_configlet.json())
